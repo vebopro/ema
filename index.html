@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>絵馬に文字を合成</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    canvas {
+      border: 1px solid #ccc;
+    }
+    #controls {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>絵馬に願い事を合成する</h1>
+  <canvas id="canvas" width="500" height="300"></canvas>
+  <div id="controls">
+    <input type="text" id="textInput" placeholder="願い事を入力" size="30">
+    <button id="generateBtn">生成</button>
+    <button id="downloadBtn">ダウンロード</button>
+  </div>
+
+  <script>
+    // 絵馬画像をロード
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const emaImage = new Image();
+    emaImage.src = 'ema_background.png'; // 事前に絵馬画像をアップロードする
+    emaImage.onload = () => {
+      ctx.drawImage(emaImage, 0, 0, canvas.width, canvas.height);
+    };
+
+    // テキストを合成する
+    document.getElementById('generateBtn').addEventListener('click', () => {
+      const text = document.getElementById('textInput').value;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(emaImage, 0, 0, canvas.width, canvas.height);
+      ctx.font = '24px Arial';
+      ctx.fillStyle = 'black';
+      ctx.textAlign = 'center';
+      ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+    });
+
+    // ダウンロード機能
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'ema.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  </script>
+</body>
+</html>
